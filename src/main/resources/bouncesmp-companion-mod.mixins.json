@@ -1,16 +1,17 @@
 {
-	"required": true,
-	"package": "io.github.racoondog.bsmpcompanion.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"creeper.BaseCreeperMixin",
-		"creeper.CreeperEntityMixin",
-		"creeper.FireballEntityMixin",
-		"creeper.RavagerEntityMixin",
-		"creeper.WitherEntityMixin",
-		"creeper.WitherSkullEntityMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "io.github.racoondog.bsmpcompanion.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "altar.AltarBlockEntityMixin",
+    "creeper.BaseCreeperMixin",
+    "creeper.CreeperEntityMixin",
+    "creeper.FireballEntityMixin",
+    "creeper.RavagerEntityMixin",
+    "creeper.WitherEntityMixin",
+    "creeper.WitherSkullEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

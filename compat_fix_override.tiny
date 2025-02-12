@@ -1,0 +1,7 @@
+tiny	2	0	official	intermediary	named
+c	bdt	net/minecraft/class_1352	net/minecraft/entity/ai/goal/Goal
+	m	()Z	a	method_6264	compat_fix$canStart
+c	bie$a	net/minecraft/class_4466$class_4467	net/minecraft/entity/passive/BeeEntity/NotAngryGoal
+	m	()Z	a	method_6264	compat_fix$canStart
+c	ayf	net/minecraft/class_5354	net/minecraft/entity/mob/Angerable
+	m	()V	c	method_29509	compat_fix$chooseRandomAngerTime

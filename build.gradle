@@ -18,14 +18,19 @@ repositories {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
+	mappings loom.layered {
+		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+		// Override some mappings where yarn conflicts with dependencies
+		// This ensures compatibility with mods using mojang mappings
+		mappings file("compat_fix_override.tiny")
+	}
+
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	modImplementation(files("libs/biomemakeover-FABRIC-1.18.2-1.4.32.jar"))
 	modImplementation(files("libs/creeperoverhaul-1.18.2-1.3.1-fabric.jar"))
 }
 
