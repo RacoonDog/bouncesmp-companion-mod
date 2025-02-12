@@ -9,12 +9,14 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import tech.thatgravyboat.creeperoverhaul.common.entity.base.BaseCreeper;
 
 /**
- * Mixin into Creeper Overhaul
+ * Implement gamerule to prevent specifically mob explosions.
+ * @author Crosby
  */
 @Pseudo
-@Mixin(targets = "tech.thatgravyboat.creeperoverhaul.common.entity.base.BaseCreeper", remap = false)
+@Mixin(value = BaseCreeper.class, remap = false)
 public class BaseCreeperMixin {
     @ModifyArgs(method = "explode", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;createExplosion(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/world/explosion/Explosion$DestructionType;)Lnet/minecraft/world/explosion/Explosion;", remap = true), remap = false)
     private void checkGamerule(Args args) {
