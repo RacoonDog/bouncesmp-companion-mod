@@ -5,3 +5,7 @@ c	bie$a	net/minecraft/class_4466$class_4467	net/minecraft/entity/passive/BeeEnti
 	m	()Z	a	method_6264	compat_fix$canStart
 c	ayf	net/minecraft/class_5354	net/minecraft/entity/mob/Angerable
 	m	()V	c	method_29509	compat_fix$chooseRandomAngerTime
+c	cmr	net/minecraft/class_2586	net/minecraft/block/entity/BlockEntity
+	m	()V	e	method_5431	compat_fix$markDirty
+c	awa	net/minecraft/class_1263	net/minecraft/inventory/Inventory
+	m	()V	e	method_5431	compat_fix$markDirty

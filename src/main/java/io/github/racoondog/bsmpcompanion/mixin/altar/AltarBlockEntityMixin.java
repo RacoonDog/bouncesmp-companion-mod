@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Prevent curses from the Mantori mod from being applied in the altar.
+ * Prevent curses from the Mantori mod from being applied in the Biome Makeover altar.
  * These curses have effects that are beneficial.
  * @author Crosby
  */

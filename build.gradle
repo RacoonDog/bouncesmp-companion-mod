@@ -22,21 +22,24 @@ repositories {
 	maven {
 		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
 	}
+	maven {
+		url = "https://maven.blamejared.com"
+	}
 }
 
 dependencies {
 	mappings loom.layered {
-		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+		mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
 		// Override some mappings where yarn conflicts with dependencies
 		// This ensures compatibility with mods using mojang mappings
-		mappings file("compat_fix_override.tiny")
+		mappings(file("compat_fix_override.tiny"))
 	}
 
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	minecraft("com.mojang:minecraft:${project.minecraft_version}")
+	modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
 	// Dependencies
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 
 	modImplementation(files("libs/biomemakeover-FABRIC-1.18.2-1.4.32.jar"))
 	modImplementation(files("libs/creeperoverhaul-1.18.2-1.3.1-fabric.jar"))
@@ -53,6 +56,7 @@ dependencies {
 	// Testing
 	modRuntimeOnly(files("libs/EnchantmentDescriptions-Fabric-1.18.2-10.0.12.jar"))
 	modRuntimeOnly(files("libs/mantori-1.1.1-1.18.2.jar"))
+	modRuntimeOnly("net.darkhax.bookshelf:Bookshelf-Fabric-1.18.2:13.3.56")
 }
 
 processResources {
