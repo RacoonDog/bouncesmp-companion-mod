@@ -18,7 +18,7 @@ import java.util.List;
 public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) implements EmiRecipe {
     @Override
     public EmiRecipeCategory getCategory() {
-        return BSMPCompanionEmiPlugin.CATEGORY;
+        return BSMPCompanionEmiPlugin.EXTRACTINATOR_CATEGORY;
     }
 
     @Override

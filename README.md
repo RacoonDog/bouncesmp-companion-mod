@@ -11,7 +11,7 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 
 ### Client
 
-- Added [EMI](https://modrinth.com/mod/emi) support for Extractinator recipes.
+- Added [EMI](https://modrinth.com/mod/emi) support for the modpack.
 - Added translations for missing keys such as Custom Portal API's portal block name and enchantment descriptions for Mantori enchantments.
 
 ## License
