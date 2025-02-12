@@ -6,12 +6,22 @@ import dev.alexnijjar.extractinator.registry.ModItems;
 import dev.alexnijjar.extractinator.registry.ModRecipeTypes;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
+import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import io.github.apace100.apoli.component.PowerHolderComponent;
+import io.github.apace100.apoli.power.RecipePower;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import java.util.List;
 
 public class BSMPCompanionEmiPlugin implements EmiPlugin {
     private static final EmiStack EXTRACTINATOR = EmiStack.of(ModItems.EXTRACTINATOR.get());
@@ -27,6 +37,19 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
         for (ExtractinatorRecipe recipe : registry.getRecipeManager().listAllOfType(ModRecipeTypes.EXTRACTINATOR_RECIPE.get())) {
             registry.addRecipe(new ExtractinatorEmiRecipe(recipe));
         }
+
+        // Show recipes based on origin
+        PowerHolderComponent.getPowers(MinecraftClient.getInstance().player, RecipePower.class)
+            .forEach(recipePower -> {
+                Recipe<CraftingInventory> recipe = recipePower.getRecipe();
+
+                List<EmiIngredient> inputs = recipe.getIngredients().stream()
+                    .map(EmiIngredient::of).toList();
+
+                EmiStack output = EmiStack.of(recipe.getOutput());
+
+                registry.addRecipe(new EmiCraftingRecipe(inputs, output, recipe.getId(), recipe instanceof ShapelessRecipe));
+            });
 
         // Hide unused
         hideTagFromItemList(registry, new Identifier("c", "disabled_upgrades"));
