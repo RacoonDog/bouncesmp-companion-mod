@@ -10,11 +10,18 @@ base {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	// Dependencies
+	maven {
+		url = "https://maven.terraformersmc.com"
+	}
+
+	// Transitive
+	maven {
+		url = "https://maven.shedaniel.me"
+	}
+	maven {
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+	}
 }
 
 dependencies {
@@ -28,10 +35,24 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+	// Dependencies
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation(files("libs/biomemakeover-FABRIC-1.18.2-1.4.32.jar"))
 	modImplementation(files("libs/creeperoverhaul-1.18.2-1.3.1-fabric.jar"))
+	modImplementation(files("libs/extractinator-fabric-1.18.2-2.0.1.jar"))
+
+	modCompileOnly("dev.emi:emi:0.7.3+1.18.2")
+
+	// Transitive
+	modImplementation(files("libs/resourcefullib-fabric-1.18.2-0.0.4.jar"))
+	modRuntimeOnly(files("libs/bclib-1.4.7.jar"))
+	modRuntimeOnly("dev.architectury:architectury-fabric:4.11.93")
+	modRuntimeOnly("software.bernie.geckolib:geckolib-fabric-1.18:3.0.80")
+
+	// Testing
+	modRuntimeOnly(files("libs/EnchantmentDescriptions-Fabric-1.18.2-10.0.12.jar"))
+	modRuntimeOnly(files("libs/mantori-1.1.1-1.18.2.jar"))
 }
 
 processResources {

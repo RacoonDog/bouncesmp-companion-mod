@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"io.github.racoondog.bsmpcompanion.BounceSMPCompanionMod"
+		],
+		"emi": [
+			"io.github.racoondog.bsmpcompanion.client.compat.emi.BSMPCompanionEmiPlugin"
 		]
 	},
 	"mixins": [
