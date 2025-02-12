@@ -1,3 +1,9 @@
 {
-  "gamerule.creeperNoBlowyBlocks": "Creeper No Blowy Blocks"
+  "gamerule.creeperNoBlowyBlocks": "Creeper No Blowy Blocks",
+
+  "enchantment.mantori.shulkers_blessing.desc": "Levitates target.",
+  "enchantment.mantori.end_breaker.desc": "Increases mining speed of end stone.",
+  "enchantment.mantori.cursed_thorns.desc": "Damages attackers.",
+
+  "block.customportalapi.customportalblock": "Custom Portal"
 }
