@@ -53,9 +53,6 @@ public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) implements EmiR
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        // Add an arrow texture to indicate processing
-        //widgets.addTexture(EmiTexture.EMPTY_ARROW, 26, 1);
-
         // Adds an input slot on the left
         widgets.addSlot(EmiIngredient.of(recipe().input()), 69, 5);
 

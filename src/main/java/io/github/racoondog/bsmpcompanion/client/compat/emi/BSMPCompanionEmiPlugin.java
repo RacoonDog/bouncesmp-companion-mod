@@ -4,12 +4,15 @@ import dev.alexnijjar.extractinator.Extractinator;
 import dev.alexnijjar.extractinator.recipes.ExtractinatorRecipe;
 import dev.alexnijjar.extractinator.registry.ModItems;
 import dev.alexnijjar.extractinator.registry.ModRecipeTypes;
+import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import earth.terrarium.chipped.recipe.ChippedRecipe;
+import earth.terrarium.chipped.registry.ModRecipeSerializers;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.RecipePower;
 import net.minecraft.client.MinecraftClient;
@@ -20,8 +23,10 @@ import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class BSMPCompanionEmiPlugin implements EmiPlugin {
     private static final EmiStack EXTRACTINATOR = EmiStack.of(ModItems.EXTRACTINATOR.get());
@@ -50,6 +55,15 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
 
                 registry.addRecipe(new EmiCraftingRecipe(inputs, output, recipe.getId(), recipe instanceof ShapelessRecipe));
             });
+
+        // Show chipped recipes
+        registerChippedWorkbench(registry, "botanist_workbench", ModRecipeSerializers.BOTANIST_WORKBENCH_SERIALIZER);
+        registerChippedWorkbench(registry, "glassblower", ModRecipeSerializers.GLASSBLOWER_SERIALIZER);
+        registerChippedWorkbench(registry, "carpenters_table", ModRecipeSerializers.CARPENTERS_TABLE_SERIALIZER);
+        registerChippedWorkbench(registry, "loom_table", ModRecipeSerializers.LOOM_TABLE_SERIALIZER);
+        registerChippedWorkbench(registry, "mason_table", ModRecipeSerializers.MASON_TABLE_SERIALIZER);
+        registerChippedWorkbench(registry, "alchemy_bench", ModRecipeSerializers.ALCHEMY_BENCH_SERIALIZER);
+        registerChippedWorkbench(registry, "mechanist_workbench", ModRecipeSerializers.MECHANIST_WORKBENCH_SERIALIZER);
 
         // Hide unused
         hideTagFromItemList(registry, new Identifier("c", "disabled_upgrades"));
@@ -370,11 +384,34 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
         hideItemFromItemList(registry, new Identifier("etched", "portal_radio"));
         hideModFromItemList(registry, "playdate");
         hideModFromItemList(registry, "mobscarecrow");
-        hideModFromItemList(registry, "skylorlib");
         hideModFromItemList(registry, "hookshot");
         hideModFromItemList(registry, "itemfilters");
         hideModFromItemList(registry, "immersive_aircraft");
         hideModFromItemList(registry, "staffofbuilding");
+    }
+
+    private static void registerChippedWorkbench(EmiRegistry registry, String workbench, Supplier<ChippedRecipe.Serializer> serializer) {
+        Identifier id = new Identifier("chipped", workbench);
+        EmiStack workbenchStack = EmiStack.of(Registry.ITEM.get(id));
+        EmiRecipeCategory category = new EmiRecipeCategory(id, workbenchStack);
+
+        registry.addCategory(category);
+        registry.addWorkstation(category, workbenchStack);
+
+        for (ChippedRecipe recipe : registry.getRecipeManager().listAllOfType(serializer.get().type.get())) {
+            // get all tags in recipe as TagKey
+            // distinct because 'mason_table.json' contains duplicate entries
+            recipe.tags().stream().map(entryList -> entryList.getStorage().orThrow()).distinct().forEach(tag -> {
+                // get all items in stack
+                List<EmiStack> outputs = EmiUtil.values(tag).map(RegistryEntry::value).map(EmiStack::of).toList();
+                outputs.forEach(stack -> {
+                    Identifier inputId = Registry.ITEM.getId(stack.getKeyOfType(Item.class));
+                    // chipped:workbench/input_id/output_tag_id
+                    Identifier recipeId = new Identifier("chipped", workbench + "/" + inputId.getPath() + "/" + tag.id().getPath());
+                    registry.addRecipe(new ChippedEmiRecipe(category, recipeId, stack, outputs));
+                });
+            });
+        }
     }
 
     private static void hideTagFromItemList(EmiRegistry registry, Identifier tagIdentifier) {

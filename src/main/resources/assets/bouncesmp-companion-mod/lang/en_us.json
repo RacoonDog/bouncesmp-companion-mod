@@ -5,5 +5,14 @@
   "enchantment.mantori.end_breaker.desc": "Increases mining speed of end stone.",
   "enchantment.mantori.cursed_thorns.desc": "Damages attackers.",
 
-  "block.customportalapi.customportalblock": "Custom Portal"
+  "block.customportalapi.customportalblock": "Custom Portal",
+
+  "emi.category.extractinator.extractinator": "Extracting",
+  "emi.category.chipped.botanist_workbench": "Botanist Crafting",
+  "emi.category.chipped.glassblower": "Glassblowing",
+  "emi.category.chipped.carpenters_table": "Carpenting",
+  "emi.category.chipped.loom_table": "Weaving",
+  "emi.category.chipped.mason_table": "Masonry Crafting",
+  "emi.category.chipped.alchemy_bench": "Philosophizing",
+  "emi.category.chipped.mechanist_workbench": "Tinkering"
 }
