@@ -34,19 +34,19 @@ public record ChippedEmiRecipe(EmiRecipeCategory category, Identifier recipeId, 
 
     @Override
     public int getDisplayWidth() {
-        return 76;
+        return 88;
     }
 
     @Override
     public int getDisplayHeight() {
-        return 18;
+        return 26;
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addTexture(EmiTexture.EMPTY_ARROW, 26, 1);
+        widgets.addTexture(EmiTexture.EMPTY_ARROW, 26, 5);
 
-        widgets.addSlot(input(), 0, 0);
-        widgets.addSlot(EmiIngredient.of(output()), 58, 0).recipeContext(this);
+        widgets.addSlot(input(), 0, 4);
+        widgets.addSlot(EmiIngredient.of(output()), 62, 0).output(true).recipeContext(this);
     }
 }

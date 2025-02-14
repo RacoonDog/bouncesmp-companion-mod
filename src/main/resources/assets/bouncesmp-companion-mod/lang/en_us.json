@@ -15,5 +15,7 @@
   "emi.category.chipped.loom_table": "Weaving",
   "emi.category.chipped.mason_table": "Masonry Crafting",
   "emi.category.chipped.alchemy_bench": "Philosophizing",
-  "emi.category.chipped.mechanist_workbench": "Tinkering"
+  "emi.category.chipped.mechanist_workbench": "Tinkering",
+
+  "rei.category.tiered.reforge": "Reforging"
 }

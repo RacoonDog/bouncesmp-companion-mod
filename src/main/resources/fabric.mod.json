@@ -20,6 +20,9 @@
 		],
 		"emi": [
 			"io.github.racoondog.bsmpcompanion.client.compat.emi.BSMPCompanionEmiPlugin"
+		],
+		"rei_client": [
+			"io.github.racoondog.bsmpcompanion.client.compat.rei.BSMPCompanionReiPlugin"
 		]
 	},
 	"mixins": [

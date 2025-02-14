@@ -12,7 +12,8 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 
 ### Client
 
-- Added [EMI](https://modrinth.com/mod/emi) support for the modpack.
+- Improved [EMI](https://modrinth.com/mod/emi) support for the modpack.
+- Improved [REI](https://modrinth.com/mod/rei) support for the modpack.
 - Added translations for missing keys such as Custom Portal API's portal block name and enchantment descriptions for Mantori enchantments.
 
 ## License

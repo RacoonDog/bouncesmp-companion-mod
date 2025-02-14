@@ -12,11 +12,24 @@ import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.RegistryEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) implements EmiRecipe {
+public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe, List<Drop> drops) implements EmiRecipe {
+    public ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) {
+        this(recipe, recipe.outputs().stream()
+            .flatMap(drop -> {
+                double chance = drop.dropChance();
+                return drop.drops().stream()
+                    .map(RegistryEntry::value)
+                    .map(item -> EmiStack.of(item, drop.maxDropCount()))
+                    .map(stack -> new Drop(stack, chance));
+            }).toList()
+        );
+    }
+
     @Override
     public EmiRecipeCategory getCategory() {
         return BSMPCompanionEmiPlugin.EXTRACTINATOR_CATEGORY;
@@ -44,7 +57,7 @@ public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) implements EmiR
 
     @Override
     public int getDisplayHeight() {
-        List<ExtractinatorRecipe.Drop> outputs = recipe().outputs();
+        List<Drop> outputs = drops();
         int rows = Math.min(MathHelper.ceil(outputs.size() / 8d), 7);
         return 26 + rows * 18;
     }
@@ -62,17 +75,15 @@ public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) implements EmiR
         // Adds an output slot on the right
         // Note that output slots need to call `recipeContext` to inform EMI about their recipe context
         // This includes being able to resolve recipe trees, favorite stacks with recipe context, and more
-        List<ExtractinatorRecipe.Drop> outputs = recipe().outputs();
+        List<Drop> outputs = drops();
         int rows = Math.min(MathHelper.ceil(outputs.size() / 8d), 7);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < rows; j++) {
                 int index = 8 * j + i;
                 if (outputs.size() > index) {
-                    ExtractinatorRecipe.Drop drop = outputs.get(index);
+                    Drop drop = outputs.get(index);
 
-                    EmiIngredient display = EmiIngredient.of(drop.drops().stream().map(holder -> EmiStack.of(holder.value()).setAmount(drop.maxDropCount())).toList());
-
-                    SlotWidget widget = widgets.addSlot(display, i * 18, j * 18 + 26).recipeContext(this);
+                    SlotWidget widget = widgets.addSlot(drop.stack, i * 18, j * 18 + 26).recipeContext(this);
 
                     if (drop.dropChance() < 1d) {
                         widget.appendTooltip(new LiteralText(String.format("Production Chance: %.1f", drop.dropChance() * 100) + "%")
@@ -84,4 +95,6 @@ public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) implements EmiR
             }
         }
     }
+
+    private record Drop(EmiStack stack, double dropChance) {}
 }
