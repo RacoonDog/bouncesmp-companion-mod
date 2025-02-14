@@ -17,7 +17,11 @@ import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.RecipePower;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.item.ToolItem;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.tag.TagKey;
@@ -32,15 +36,31 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
     private static final EmiStack EXTRACTINATOR = EmiStack.of(ModItems.EXTRACTINATOR.get());
     public static final EmiRecipeCategory EXTRACTINATOR_CATEGORY = new EmiRecipeCategory(new Identifier(Extractinator.MOD_ID, "extractinator"), EXTRACTINATOR);
 
+    private static final EmiStack ANVIL = EmiStack.of(Items.ANVIL);
+    public static final EmiRecipeCategory REFORGE_CATEGORY = new EmiRecipeCategory(new Identifier("tiered", "reforge"), ANVIL);
+
     @Override
     public void register(EmiRegistry registry) {
         // Register extractinator recipes
         registry.addCategory(EXTRACTINATOR_CATEGORY);
-
         registry.addWorkstation(EXTRACTINATOR_CATEGORY, EXTRACTINATOR);
 
         for (ExtractinatorRecipe recipe : registry.getRecipeManager().listAllOfType(ModRecipeTypes.EXTRACTINATOR_RECIPE.get())) {
             registry.addRecipe(new ExtractinatorEmiRecipe(recipe));
+        }
+
+        // Register reforging
+        registry.addCategory(REFORGE_CATEGORY);
+        registry.addWorkstation(REFORGE_CATEGORY, ANVIL);
+
+        for (Item item : Registry.ITEM) {
+            if (item instanceof ArmorItem armorItem) {
+                Ingredient repair = armorItem.getMaterial().getRepairIngredient();
+                registry.addRecipe(new TieredReforgeRecipe(armorItem, repair));
+            } else if (item instanceof ToolItem toolItem) {
+                Ingredient repair = toolItem.getMaterial().getRepairIngredient();
+                registry.addRecipe(new TieredReforgeRecipe(toolItem, repair));
+            }
         }
 
         // Show recipes based on origin
