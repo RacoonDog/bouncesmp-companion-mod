@@ -5,6 +5,8 @@ import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -13,6 +15,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+@Environment(EnvType.CLIENT)
 public class BSMPCompanionReiPlugin implements REIClientPlugin {
     public static final CategoryIdentifier<TieredReforgeDisplay> REFORGE_CATEGORY = CategoryIdentifier.of(new Identifier("tiered", "reforge"));
 

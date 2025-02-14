@@ -6,11 +6,14 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public record ChippedEmiRecipe(EmiRecipeCategory category, Identifier recipeId, EmiStack input, List<EmiStack> output) implements EmiRecipe {
     @Override
     public EmiRecipeCategory getCategory() {

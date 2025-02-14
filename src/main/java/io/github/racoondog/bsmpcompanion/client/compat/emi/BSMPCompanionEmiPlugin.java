@@ -15,6 +15,8 @@ import earth.terrarium.chipped.recipe.ChippedRecipe;
 import earth.terrarium.chipped.registry.ModRecipeSerializers;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.RecipePower;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ArmorItem;
@@ -32,6 +34,7 @@ import net.minecraft.util.registry.RegistryEntry;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Environment(EnvType.CLIENT)
 public class BSMPCompanionEmiPlugin implements EmiPlugin {
     private static final EmiStack EXTRACTINATOR = EmiStack.of(ModItems.EXTRACTINATOR.get());
     public static final EmiRecipeCategory EXTRACTINATOR_CATEGORY = new EmiRecipeCategory(new Identifier(Extractinator.MOD_ID, "extractinator"), EXTRACTINATOR);

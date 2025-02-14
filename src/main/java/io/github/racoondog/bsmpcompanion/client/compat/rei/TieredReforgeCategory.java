@@ -8,6 +8,8 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -15,6 +17,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class TieredReforgeCategory implements DisplayCategory<TieredReforgeDisplay> {
     private static final Identifier BUTTON_TEXTURE = new Identifier("tiered", "textures/gui/reforging_screen.png");
 

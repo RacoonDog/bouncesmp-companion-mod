@@ -7,6 +7,8 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public record ExtractinatorEmiRecipe(ExtractinatorRecipe recipe, List<Drop> drops) implements EmiRecipe {
     public ExtractinatorEmiRecipe(ExtractinatorRecipe recipe) {
         this(recipe, recipe.outputs().stream()

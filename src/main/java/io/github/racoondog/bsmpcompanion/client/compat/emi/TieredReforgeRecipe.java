@@ -6,6 +6,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -15,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public record TieredReforgeRecipe(Item item, Ingredient repairIngredient) implements EmiRecipe {
     private static final EmiTexture BUTTON_TEXTURE = new EmiTexture(new Identifier("tiered", "textures/gui/reforging_screen.png"), 176, 0, 18, 18);
 
