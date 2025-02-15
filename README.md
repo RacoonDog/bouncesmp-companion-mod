@@ -9,6 +9,7 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 - Added gamerule `creeperNoBlowyBlocks` to prevent mob griefing from specifically explosions (creeper, ghast, wither, ravager).
 - Prevent curse enchantments from the Mantori mod from being applied when using the Biome Makeover altar, because they are actually beneficial.
 - Let all jobs select the extractinator block.
+- Add some missing blocks to extractinator loot pools.
 
 ### Client
 
