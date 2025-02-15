@@ -1,9 +1,9 @@
 {
-  "type": "origins:prevent_block_use",
-  "block_condition": {
-    "type": "origins:block",
-    "block": "extractinator:extractinator"
-  },
-  "hidden": true,
-  "loading_priority": 10
+    "type": "origins:prevent_block_use",
+    "block_condition": {
+        "type": "origins:block",
+        "block": "extractinator:extractinator"
+    },
+    "hidden": true,
+    "loading_priority": 10
 }

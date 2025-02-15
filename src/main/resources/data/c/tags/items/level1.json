@@ -1,8 +1,8 @@
 {
-	"replace": false,
-	"values": [
-            "minecraft:tuff",
-            "minecraft:cobblestone",
-            "minecraft:gravel"
-	]
+    "replace": false,
+    "values": [
+        "minecraft:tuff",
+        "minecraft:cobblestone",
+        "minecraft:gravel"
+    ]
 }
