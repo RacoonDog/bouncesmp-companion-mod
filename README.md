@@ -11,11 +11,11 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 - Lets all jobs select the Extractinator block.
 - Adds some missing blocks to Extractinator loot pools.[^1]
 
-[^1]: Added to the following blocks to the Extractinator loot pools:
-- Cobblestone
-- Gravel
-- Tuff
-- Smooth Basalt
+[^1]: Adds the following blocks to the Extractinator loot pools:
+  - Cobblestone
+  - Gravel
+  - Tuff
+  - Smooth Basalt
 
 ### Client
 
@@ -24,12 +24,12 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 - Adds translations for missing keys such as Custom Portal API's portal block name and enchantment descriptions for Mantori enchantments.
 
 [^2]: Adds [EMI](https://modrinth.com/mod/emi) support for the following mods:
-- Extractinator
-- Tiered reforging
-- Origins job-locked recipes
-- Chipped
+  - Extractinator
+  - Tiered reforging
+  - Origins job-locked recipes
+  - Chipped
 [^3]: Adds [REI](https://modrinth.com/mod/rei) support for the following mods:
-- Tiered reforging
+  - Tiered reforging
 [^4]: REI does not support showing Origins job-locked recipes, it is therefore recommended to use [EMI](https://modrinth.com/mod/emi) instead.
 
 ## License
