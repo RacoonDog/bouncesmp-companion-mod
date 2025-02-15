@@ -18,14 +18,10 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 ### Client
 
 - Improves [EMI](https://modrinth.com/mod/emi) & [EMI Loot](https://modrinth.com/mod/emi-loot) support for the modpack.[^2]
-- Improves [REI](https://modrinth.com/mod/rei) support for the modpack.[^3][^4]
 - Adds translations for missing keys such as Custom Portal API's portal block name and enchantment descriptions for Mantori & Magna enchantments.
 
 [^2]: Adds [EMI](https://modrinth.com/mod/emi) support for the following mods:
   Extractinator, Tiered, Origins, Numismatic Overhaul, Tokenable Furnaces, and Chipped
-[^3]: Adds [REI](https://modrinth.com/mod/rei) support for the following mods:
-  Tiered
-[^4]: REI does not support showing Origins job-locked recipes, it is therefore recommended to use [EMI](https://modrinth.com/mod/emi) instead.
 
 ## License
 
