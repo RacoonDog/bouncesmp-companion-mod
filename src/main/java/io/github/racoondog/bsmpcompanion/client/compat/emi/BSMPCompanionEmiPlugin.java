@@ -1,5 +1,6 @@
 package io.github.racoondog.bsmpcompanion.client.compat.emi;
 
+import com.glisco.numismaticoverhaul.client.gui.shop.ShopScreen;
 import dev.alexnijjar.extractinator.Extractinator;
 import dev.alexnijjar.extractinator.recipes.ExtractinatorRecipe;
 import dev.alexnijjar.extractinator.registry.ModItems;
@@ -9,8 +10,12 @@ import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.mixin.accessor.HandledScreenAccessor;
+import draylar.tiered.reforge.ReforgeScreen;
 import earth.terrarium.chipped.recipe.ChippedRecipe;
 import earth.terrarium.chipped.registry.ModRecipeSerializers;
 import io.github.apace100.apoli.component.PowerHolderComponent;
@@ -18,6 +23,10 @@ import io.github.apace100.apoli.power.RecipePower;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.AnvilScreen;
+import net.minecraft.client.gui.screen.ingame.CraftingScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -30,6 +39,8 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
+import website.skylorbeck.minecraft.tokenablefurnaces.Declarer;
+import website.skylorbeck.minecraft.tokenablefurnaces.Screenhandlers.*;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -44,7 +55,9 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
 
     @Override
     public void register(EmiRegistry registry) {
-        // Register extractinator recipes
+        /* --- Register recipes --- */
+
+        // Register Extractinator recipes
         registry.addCategory(EXTRACTINATOR_CATEGORY);
         registry.addWorkstation(EXTRACTINATOR_CATEGORY, EXTRACTINATOR);
 
@@ -52,7 +65,7 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
             registry.addRecipe(new ExtractinatorEmiRecipe(recipe));
         }
 
-        // Register reforging
+        // Register Tiered reforging
         registry.addCategory(REFORGE_CATEGORY);
         registry.addWorkstation(REFORGE_CATEGORY, ANVIL);
 
@@ -79,7 +92,7 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
                 registry.addRecipe(new EmiCraftingRecipe(inputs, output, recipe.getId(), recipe instanceof ShapelessRecipe));
             });
 
-        // Show chipped recipes
+        // Show Chipped recipes
         registerChippedWorkbench(registry, "botanist_workbench", ModRecipeSerializers.BOTANIST_WORKBENCH_SERIALIZER);
         registerChippedWorkbench(registry, "glassblower", ModRecipeSerializers.GLASSBLOWER_SERIALIZER);
         registerChippedWorkbench(registry, "carpenters_table", ModRecipeSerializers.CARPENTERS_TABLE_SERIALIZER);
@@ -87,6 +100,18 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
         registerChippedWorkbench(registry, "mason_table", ModRecipeSerializers.MASON_TABLE_SERIALIZER);
         registerChippedWorkbench(registry, "alchemy_bench", ModRecipeSerializers.ALCHEMY_BENCH_SERIALIZER);
         registerChippedWorkbench(registry, "mechanist_workbench", ModRecipeSerializers.MECHANIST_WORKBENCH_SERIALIZER);
+
+        // Show Tokenable Furnaces upgrading
+        registerTokenableFurnacesUpgradeTree(registry, Items.BARREL, Declarer.ironBarrel, Declarer.goldBarrel, Declarer.diamondBarrel, Declarer.netheriteBarrel, Declarer.amethystBarrel);
+        registerTokenableFurnacesUpgradeTree(registry, Items.BLAST_FURNACE, Declarer.ironBlast, Declarer.goldBlast, Declarer.diamondBlast, Declarer.netheriteBlast, Declarer.amethystBlast);
+        registerTokenableFurnacesUpgradeTree(registry, Items.CHEST, Declarer.ironChest, Declarer.goldChest, Declarer.diamondChest, Declarer.netheriteChest, Declarer.amethystChest);
+        registerTokenableFurnacesUpgradeTree(registry, Items.FURNACE, Declarer.ironFurnace, Declarer.goldFurnace, Declarer.diamondFurnace, Declarer.netheriteFurnace, Declarer.amethystFurnace);
+        registerTokenableFurnacesUpgradeTree(registry, Items.HOPPER, Declarer.ironHopper, Declarer.goldHopper, Declarer.diamondHopper, Declarer.netheriteHopper, Declarer.amethystHopper);
+        registerTokenableFurnacesUpgradeTree(registry, Items.SHULKER_BOX, Declarer.ironShulker, Declarer.goldShulker, Declarer.diamondShulker, Declarer.netheriteShulker, Declarer.amethystShulker);
+        registerTokenableFurnacesUpgradeTree(registry, Items.SMOKER, Declarer.ironSmoker, Declarer.goldSmoker, Declarer.diamondSmoker, Declarer.netheriteSmoker, Declarer.amethystSmoker);
+        registerTokenableFurnacesUpgradeTree(registry, Items.TRAPPED_CHEST, Declarer.ironTrappedChest, Declarer.goldTrappedChest, Declarer.diamondTrappedChest, Declarer.netheriteTrappedChest, Declarer.amethystTrappedChest);
+
+        /* --- Unregister recipes ---*/
 
         // Hide unused
         hideTagFromItemList(registry, new Identifier("c", "disabled_upgrades"));
@@ -411,6 +436,124 @@ public class BSMPCompanionEmiPlugin implements EmiPlugin {
         hideModFromItemList(registry, "itemfilters");
         hideModFromItemList(registry, "immersive_aircraft");
         hideModFromItemList(registry, "staffofbuilding");
+
+        /* --- Register exclusion areas --- */
+
+        // Survival inventory trash slot
+        registry.addExclusionArea(InventoryScreen.class, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            int right = left + ((HandledScreenAccessor) screen).getBackgroundWidth();
+            int bottom = top + ((HandledScreenAccessor) screen).getBackgroundHeight();
+            consumer.accept(new Bounds(right - 32, bottom, 32, 21));
+        });
+        registry.addExclusionArea(CraftingScreen.class, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            int right = left + ((HandledScreenAccessor) screen).getBackgroundWidth();
+            int bottom = top + ((HandledScreenAccessor) screen).getBackgroundHeight();
+            consumer.accept(new Bounds(right - 32, bottom, 32, 21));
+        });
+
+        // Numismatic overhaul shop screen
+        registry.addExclusionArea(ShopScreen.class, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            int right = left + ((HandledScreenAccessor) screen).getBackgroundWidth();
+
+            consumer.accept(new Bounds(left - 29, top + 5, 29, 60));
+
+            int tab = screen.getSelectedTab();
+            if (tab == 0) {
+                consumer.accept(new Bounds(right, top, 36, 86));
+            } else {
+                consumer.accept(new Bounds(right, top, 100, 54));
+                consumer.accept(new Bounds(right, top + 54, 36, 60));
+            }
+        });
+
+        // Tiered anvil reforge button
+        registry.addExclusionArea(AnvilScreen.class, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            consumer.accept(new Bounds(left, top - 23, 49, 23));
+        });
+        registry.addExclusionArea(ReforgeScreen.class, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            consumer.accept(new Bounds(left, top - 23, 49, 23));
+        });
+
+        // Tokenable furnaces chest tabs
+        registry.addExclusionArea(AmethystDoubleHandledScreen.class, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            int right = left + ((HandledScreenAccessor) screen).getBackgroundWidth();
+            consumer.accept(new Bounds(left - 29, top + 4, 29, 8 * 16));
+            consumer.accept(new Bounds(right, top + 4, 29, 8 * 16));
+        });
+        registerResourceChestExclusion(registry, AmethystHandledScreen.class, 8);
+        registerResourceChestExclusion(registry, DiamondHandledScreen.class, 4);
+        registerResourceChestExclusion(registry, GoldHandledScreen.class, 2);
+        registerResourceChestExclusion(registry, IronHandledScreen.class, 1);
+    }
+
+    private static final EmiStack OMNI_TOKEN = EmiStack.of(Declarer.omniToken),
+        IRON_TOKEN = EmiStack.of(Declarer.ironToken),
+        GOLD_TOKEN = EmiStack.of(Declarer.goldToken),
+        DIAMOND_TOKEN = EmiStack.of(Declarer.diamondToken),
+        NETHERITE_TOKEN = EmiStack.of(Declarer.netheriteToken),
+        AMETHYST_TOKEN = EmiStack.of(Declarer.amethystToken);
+
+    private static void registerTokenableFurnacesUpgradeTree(EmiRegistry registry, Item baseItem, Item ironItem, Item goldItem, Item diamondItem, Item netheriteItem, Item amethystItem) {
+        EmiStack baseStack = EmiStack.of(baseItem),
+            ironStack = EmiStack.of(ironItem),
+            goldStack = EmiStack.of(goldItem),
+            diamondStack = EmiStack.of(diamondItem),
+            netheriteStack = EmiStack.of(netheriteItem),
+            amethystStack = EmiStack.of(amethystItem);
+
+        registerTokenableFurnacesUpgradeRecipes(registry, baseStack, IRON_TOKEN, ironStack);
+        registerTokenableFurnacesUpgradeRecipes(registry, ironStack, GOLD_TOKEN, goldStack);
+        registerTokenableFurnacesUpgradeRecipes(registry, goldStack, DIAMOND_TOKEN, diamondStack);
+        registerTokenableFurnacesUpgradeRecipes(registry, diamondStack, NETHERITE_TOKEN, netheriteStack);
+        registerTokenableFurnacesUpgradeRecipe(registry, diamondStack, AMETHYST_TOKEN, amethystStack);
+    }
+
+    // register both regular and omni recipe
+    private static void registerTokenableFurnacesUpgradeRecipes(EmiRegistry registry, EmiStack inputStack, EmiStack tokenStack, EmiStack outputStack) {
+        registerTokenableFurnacesUpgradeRecipe(registry, inputStack, tokenStack, outputStack);
+        Identifier outputId = Registry.ITEM.getId(outputStack.getKeyOfType(Item.class));
+        // omni token upgrade recipe
+        registry.addRecipe(EmiWorldInteractionRecipe.builder()
+            .id(new Identifier("tokenablefurnaces", "omni_upgrade/" + outputId.getPath()))
+            .leftInput(inputStack)
+            .rightInput(OMNI_TOKEN, true)
+            .output(outputStack)
+            .supportsRecipeTree(false)
+            .build()
+        );
+    }
+
+    // register only regular recipe
+    private static void registerTokenableFurnacesUpgradeRecipe(EmiRegistry registry, EmiStack inputStack, EmiStack tokenStack, EmiStack outputStack) {
+        Identifier outputId = Registry.ITEM.getId(outputStack.getKeyOfType(Item.class));
+        // regular token upgrade recipe
+        registry.addRecipe(EmiWorldInteractionRecipe.builder()
+            .id(new Identifier("tokenablefurnaces", "upgrade/" + outputId.getPath()))
+            .leftInput(inputStack)
+            .rightInput(tokenStack, false)
+            .output(outputStack)
+            .build()
+        );
+    }
+
+    private static <T extends Screen> void registerResourceChestExclusion(EmiRegistry registry, Class<T> clazz, int tabs) {
+        registry.addExclusionArea(clazz, (screen, consumer) -> {
+            int left = ((HandledScreenAccessor) screen).getX();
+            int top = ((HandledScreenAccessor) screen).getY();
+            consumer.accept(new Bounds(left - 29, top + 4, 29, tabs * 16));
+        });
     }
 
     private static void registerChippedWorkbench(EmiRegistry registry, String workbench, Supplier<ChippedRecipe.Serializer> serializer) {
