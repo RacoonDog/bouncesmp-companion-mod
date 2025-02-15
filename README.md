@@ -10,6 +10,7 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 - Prevents curse enchantments from the Mantori mod from being applied when using the Biome Makeover altar, because they are actually beneficial.
 - Lets all jobs select the Extractinator block.
 - Adds some missing blocks to Extractinator loot pools.[^1]
+- Fixes Tiered reforging.
 
 [^1]: Adds the following blocks to the Extractinator loot pools:
   Cobblestone, Gravel, Tuff, and Smooth Basalt
