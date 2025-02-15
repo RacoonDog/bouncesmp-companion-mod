@@ -1,0 +1,21 @@
+{
+    "earthtojavamobs:skeleton_wolf": {
+        "offset": -8
+    },
+    "betternether:naga": {
+        "scale": 0.8,
+        "offset": 1
+    },
+    "betternether:skull": {
+        "scale": 1.5,
+        "offset": -16
+    },
+    "minecraft:villager": {
+        "scale": 1.2,
+        "offset": -2
+    },
+    "minecraft:zombie_villager": {
+        "scale": 1.2,
+        "offset": -2
+    }
+}
