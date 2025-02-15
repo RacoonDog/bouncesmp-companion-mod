@@ -19,7 +19,7 @@ A collection of various fixes to improve the [BounceSMP modpack](https://www.cur
 
 - Improves [EMI](https://modrinth.com/mod/emi) support for the modpack.[^2]
 - Improves [REI](https://modrinth.com/mod/rei) support for the modpack.[^3][^4]
-- Adds translations for missing keys such as Custom Portal API's portal block name and enchantment descriptions for Mantori enchantments.
+- Adds translations for missing keys such as Custom Portal API's portal block name and enchantment descriptions for Mantori & Magna enchantments.
 
 [^2]: Adds [EMI](https://modrinth.com/mod/emi) support for the following mods:
   Extractinator, Tiered reforging, Origins job-locked recipes, and Chipped
